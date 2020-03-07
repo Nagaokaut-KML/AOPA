@@ -8,15 +8,16 @@ class DetectionMotion:
 
     def __init__(self, video_path):
         self.video_path = video_path
+        self.source = video_path.lstrip('./video/')
         
-            
     # -- file path --
     def delete_file(self):
-        if os.path.exists('./result/list_result_{}.csv'.format(self.video_path)):
-            os.remove('./result/list_result_{}.csv'.format(self.video_path))
+        print('source',self.source)
+        if os.path.exists('./result/list_result_{}.csv'.format(self.source)):
+            os.remove('./result/list_result_{}.csv'.format(self.source))
             print ('delete')
 
-    # -- uv(BGR) -- あとは結果を出力するためのリストを整備する
+    # -- uv(BGR) -- 
     def detection_uv_bgr(self, frame):
         # test
         # print('detection_uv start')
@@ -46,26 +47,20 @@ class DetectionMotion:
             print('err')
             return 2    
 
-    # -- paper -- あとは結果を出力するためのリストを整備する 
+    # -- paper --  
     def detection_paper(self, frame):
         # ピクセルの切り取り
         pixel_value = frame[266:296, 438] # x座標:438, y座標:266~296
 
         # 各ピクセルの平均
         pixel_average = np.average(pixel_value, axis=1)
-        result = 0
-        max_result = 0
-        init_value = 265
-        max_value = 265 # 初期値
 
         try:
             result = np.where(pixel_average > 65) # 各ピクセルで平均が65以上のものを抽出
-            max_result = result[0][-1] + 266
-            if abs(max_result - max_value) < 3 and max_value < max_result:
-                max_value = max_result
+            print('result', result)
+            radius = result[0][-1]
 
-            print (max_value)
-            return max_value - init_value   
+            return radius
 
         except Exception as e:
             print(e)    
@@ -78,13 +73,14 @@ class DetectionMotion:
         print (self.video_path)
         self.delete_file()
 
-        with open('./result/list_result_{}.csv'.format(self.video_path), 'a') as f:
+        with open('./result/list_result_{}.csv'.format(self.source), 'a') as f:
             writer = csv.writer(f)
             init_result = ['video', 'frame', 'uv', 'paper_max_value']
             writer.writerow(init_result)
             
             cap = cv2.VideoCapture(self.video_path)
-            video_name = self.video_path
+            print(self.video_path)
+            video_name = self.source
             
             while(cap.isOpened()):
                 print(count)
@@ -93,6 +89,7 @@ class DetectionMotion:
                 result_uv = self.detection_uv_bgr(frame)
                 # -- paper --
                 result_paper = self.detection_paper(frame)
+                # 結果出力
                 result = [video_name.rstrip(".mp4"), count, result_uv, result_paper]
                 writer.writerow(result) 
                 list_result.clear()
@@ -100,12 +97,10 @@ class DetectionMotion:
 
         cap.release()
         cv2.destroyAllWindows()
-        
 
 # -- 出力テスト--
-# test = DetectionMotion('161439.mp4')
-# test = DetectionMotion('161905.mp4')
-test = DetectionMotion('085604.mp4')
-# test.detection_uv()
-test.manage()
-
+test1 = DetectionMotion('video/161439.mp4')
+# test2 = DetectionMotion('video/161905.mp4')
+# test = DetectionMotion('video/085604.mp4')
+test1.manage()
+# test2.manage()

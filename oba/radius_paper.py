@@ -3,7 +3,9 @@ import cv2
 
 # VIDEO_SRC = '161905'
 VIDEO_SRC = '161439'
-cap = cv2.VideoCapture(VIDEO_SRC + '.mp4')
+cap = cv2.VideoCapture('./video/' + VIDEO_SRC + '.mp4')
+
+count = 0
 
 while(cap.isOpened()):
     end_flag, frame = cap.read()
@@ -16,9 +18,13 @@ while(cap.isOpened()):
     
     try:
         result = np.where(pixel_average > 65)
+        print ('result', result)
         radius = result[0][-1]
-        print(radius)
+        print('rsdius',radius)
 
-    except:
+    except Exception as e:
         print(e)
+
+    count += 1
+    print (count)
 
