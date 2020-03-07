@@ -58,8 +58,9 @@ class DetectionMotion:
         try:
             result = np.where(pixel_average > 65) # 各ピクセルで平均が65以上のものを抽出
             print('result', result)
+            
             radius = result[0][-1]
-
+            
             return radius
 
         except Exception as e:
@@ -99,8 +100,8 @@ class DetectionMotion:
         cv2.destroyAllWindows()
 
 # -- 出力テスト--
-test1 = DetectionMotion('video/161439.mp4')
-# test2 = DetectionMotion('video/161905.mp4')
+# test1 = DetectionMotion('video/161439.mp4')
+test2 = DetectionMotion('video/161905.mp4')
 # test = DetectionMotion('video/085604.mp4')
-test1.manage()
-# test2.manage()
+# test1.manage()
+test2.manage()
