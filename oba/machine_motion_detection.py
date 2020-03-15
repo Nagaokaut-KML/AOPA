@@ -5,7 +5,6 @@ import pandas as pd
 import os
 
 class DetectionMotion:
-
     def __init__(self, video_path):
         self.video_path = video_path
         self.source = video_path.lstrip('./video/')
@@ -19,9 +18,6 @@ class DetectionMotion:
 
     # -- uv(BGR) -- 
     def detection_uv_bgr(self, frame):
-        # test
-        # print('detection_uv start')
-
         # UVの部分を切り取る
         img_cut = frame[90 : 110, 350 : 380]
         height, width, ch = img_cut.shape
@@ -58,11 +54,8 @@ class DetectionMotion:
         try:
             result = np.where(pixel_average > 65) # 各ピクセルで平均が65以上のものを抽出
             print('result', result)
-            
             radius = result[0][-1]
-            
             return radius
-
         except Exception as e:
             print(e)    
         
@@ -70,8 +63,7 @@ class DetectionMotion:
         result = []
         list_result = []
         count = 0
-
-        print (self.video_path)
+        print (self.video_path) # 確認用
         self.delete_file()
 
         with open('./result/list_result_{}.csv'.format(self.source), 'a') as f:
@@ -79,8 +71,8 @@ class DetectionMotion:
             init_result = ['video', 'frame', 'uv', 'paper_max_value']
             writer.writerow(init_result)
             
+            # 動画読み込み
             cap = cv2.VideoCapture(self.video_path)
-            print(self.video_path)
             video_name = self.source
             
             while(cap.isOpened()):
@@ -99,9 +91,6 @@ class DetectionMotion:
         cap.release()
         cv2.destroyAllWindows()
 
-# -- 出力テスト--
-# test1 = DetectionMotion('video/161439.mp4')
+# -- 出力テスト--最終的には消す
 test2 = DetectionMotion('video/161905.mp4')
-# test = DetectionMotion('video/085604.mp4')
-# test1.manage()
 test2.manage()
