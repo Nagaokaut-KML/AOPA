@@ -17,10 +17,10 @@ class Velocity:
         bgr_mean = np.mean(bgr)
         return bgr_mean
 
-    def get_amplitude(self, bgr_list):
+    def get_amplitude(self, bgr_list, window):
         result_list = []
-        for i in range(0, 3900, 50):
-            y = bgr_list[i:i+50]
+        for i in range(0, len(bgr_list)-window, window):
+            y = bgr_list[i:i+window]
             result = max(y) - min(y)
             result_list.append(result)
         return result_list
@@ -43,17 +43,9 @@ class Velocity:
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-        amplitude = self.get_amplitude (bgr_list=bgr_list)
-        print (amplitude)
+        amplitude = self.get_amplitude (bgr_list=bgr_list,window=15)
 
-        x = count_list[0:78]
+        x = list(range(len(amplitude)))
         y = amplitude
-        plt.figure()
-        plt.title('amplitude')
-        plt.ylim([0, 130])
-        plt.plot(x, y)
-        plt.show()
-        plt.savefig('./result.png')
 
-test = Velocity('./video/094448.mp4')
-test.manage()
+        return x, y, bgr_list 
