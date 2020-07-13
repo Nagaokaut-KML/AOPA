@@ -1,0 +1,14 @@
+weight: "./run/factory/deeplab-mobilenet/experiment_1/checkpoint.pth.tar"
+dataloader:
+    base_path: "/groups2/gcb50278/all_frames/"
+    days: ['20180903/','20180904/','20180915/']
+    save_npz: ["/groups2/gcb50278/aopa/encode/encode03", "/groups2/gcb50278/aopa/encode/encode04", "/groups2/gcb50278/aopa/encode/encode15"]
+    csv: ["/groups2/gcb50278/aopa/encode/images_order03","/groups2/gcb50278/aopa/encode/images_order04", "/groups2/gcb50278/aopa/encode/images_order15"]
+    time_path: ["./data/20180903time.csv", "./data/20180904time.csv", "./data/time0915.csv"]
+    # days: ['20180904/','20180915/']
+    # save_npz: [ "/groups2/gcb50278/aopa/encode/encode04", "/groups2/gcb50278/aopa/encode/encode15"]
+    # csv: ["/groups2/gcb50278/aopa/encode/images_order04", "/groups2/gcb50278/aopa/encode/images_order15"]
+    # time_path: ["./data/20180904time.csv", "./data/time0915.csv"] 
+    batch_size: 10
+    np_path: 128
+image_size: 512

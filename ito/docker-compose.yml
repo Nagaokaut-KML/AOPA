@@ -1,0 +1,19 @@
+version: "3.2"
+services:
+  app:
+    container_name: "proj_aopa"
+    image: inatetsu/medical_lung
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - type: bind
+        source: ./
+        target: /home/ito
+
+    ports: 
+      - 8888:8888
+    environment:
+      NB_UID: 501 #自分のUID ググれば出てくるdockr
+      GRANT_SUDO: "yes"
+    command:  jupyter lab --ip=0.0.0.0 --allow-root --no-browser 
